@@ -82,6 +82,6 @@ class Day01(filePath: String) : DaySolver(filePath) {
 
 fun main() {
     val path = "src/main/inputs/day01.in"
-    val day1 = Day01(path)
-    day1.printSolution()
+    val day = Day01(path)
+    day.printSolution()
 }
