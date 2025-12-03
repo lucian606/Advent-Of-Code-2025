@@ -33,27 +33,10 @@ class Day03(filePath: String) : DaySolver(filePath) {
                 if (digitToAdd >= firstDigit) {
                     var num = digitToAdd.toString() + maxStr
 
-                    var minDigit = num[0].digitToInt()
-                    for (j in 1 until num.length) {
-                        val digit = num[j].digitToInt()
-                        if (digit < minDigit) {
-                            minDigit = digit
-                        }
-                    }
-
-                    var indexToRemove = 0
-                    for (j in num.indices) {
-                        val digit = num[j].digitToInt()
-                        if (digit == minDigit) {
-                            indexToRemove = j
-                            break
-                        }
-                    }
-
-                    num = num.slice(0 until indexToRemove) + num.slice(indexToRemove + 1 until num.length)
-
-                    if (num.toLong() > max) {
-                        max = num.toLong()
+                    for (k in 1 until num.length) {
+                        var tmp = num.slice(0 until k) + num.slice(k + 1 until num.length)
+                        if (tmp.toLong() > max)
+                            max = tmp.toLong()
                     }
                 }
             }
