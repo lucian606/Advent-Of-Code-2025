@@ -20,7 +20,6 @@ class Day02(filePath: String) : DaySolver(filePath) {
             if (chunks.areAllElementsEqual()) {
                 return true
             }
-
         }
 
         return false
@@ -33,7 +32,6 @@ class Day02(filePath: String) : DaySolver(filePath) {
             val intervalPieces = interval.split("-")
             val start = intervalPieces[0].toLong()
             val end = intervalPieces[1].toLong()
-
 
             for (num in start..end) {
                 if (isIdInvalid(num)) {
@@ -52,7 +50,6 @@ class Day02(filePath: String) : DaySolver(filePath) {
             val intervalPieces = interval.split("-")
             val start = intervalPieces[0].toLong()
             val end = intervalPieces[1].toLong()
-
 
             for (num in start..end) {
                 if (isIdInvalidPart2(num)) {
