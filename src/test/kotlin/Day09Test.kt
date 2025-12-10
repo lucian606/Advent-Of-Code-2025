@@ -15,6 +15,6 @@ class Day09Test {
         val path = "src/test/inputs/day09_example.in"
         val day = Day09(path)
         val res = day.solvePartTwo(day.readInput())
-        assertEquals("25272", res)
+        assertEquals("24", res)
     }
 }
