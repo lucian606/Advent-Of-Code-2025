@@ -45,71 +45,7 @@ class Day09(filePath: String) : DaySolver(filePath) {
     }
 
     override fun solvePartTwo(input: List<String>): String {
-        val redTiles = getRedTiles(input)
-        val inside = mutableSetOf<CardinalPoint>()
-        inside.addAll(redTiles)
-        val outside = mutableSetOf<CardinalPoint>()
-
-        val lines = mutableListOf<Line>()
-
-        for (i in redTiles.indices) {
-            var nextVertex: CardinalPoint? = null
-            val vertex = redTiles[i]
-            if (i == redTiles.size - 1) {
-                nextVertex = redTiles[0]
-            } else {
-                nextVertex = redTiles[i + 1]
-            }
-            val line = Line(
-                arrayOf(vertex.x, nextVertex.x),
-                arrayOf(vertex.y, nextVertex.y)
-            )
-        }
-
-        var maxArea = 0L
-
-//        for (i in redTiles.indices) {
-//            for (j in i + 1 until redTiles.size) {
-//                val minX = Math.min(redTiles[i].x, redTiles[j].x)
-//                val maxX = Math.max(redTiles[i].x, redTiles[j].x)
-//                val minY = Math.min(redTiles[i].y, redTiles[j].y)
-//                val maxY = Math.max(redTiles[i].y, redTiles[j].y)
-//
-//                if (minX == maxX || minY == maxY) {
-//                    continue
-//                }
-//
-//                var isValid = true
-//
-//                for (x in minX..maxX) {
-//                    for (y in minY..maxY) {
-//                        val cardinalPoint = CardinalPoint(x, y)
-//
-//                        if (cardinalPoint in outside) {
-//                            isValid = false
-//                            break
-//                        } else if (cardinalPoint in inside || isPointInsidePolygon(redTiles, CardinalPoint(x,y))) {
-//                            inside.add(cardinalPoint)
-//                        } else {
-//                            outside.add(cardinalPoint)
-//                        }
-//                    }
-//                }
-//
-//                if (isValid) {
-//                    val area = getRectangleArea(redTiles[i], redTiles[j])
-//                    if (maxArea < area) {
-//                        maxArea = area
-//
-//                        println(redTiles[i].toString() + " - " + println(redTiles[j]).toString())
-//                    }
-//                }
-//            }
-//        }
-
-        println(redTiles)
-
-        return maxArea.toString()
+        return "Todo in kotlin"
     }
 }
 
