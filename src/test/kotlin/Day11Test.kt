@@ -12,9 +12,9 @@ class Day11Test {
 
     @Test
     fun `test example part2`() {
-        val path = "src/test/inputs/day11_example.in"
+        val path = "src/test/inputs/day11_part2_example.in"
         val day = Day11(path)
         val res = day.solvePartTwo(day.readInput())
-        assertEquals("24", res)
+        assertEquals("2", res)
     }
 }
