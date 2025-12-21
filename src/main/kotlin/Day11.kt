@@ -1,5 +1,3 @@
-import java.util.*
-
 class Day11(filePath: String) : DaySolver(filePath) {
     private fun buildGraph(input: List<String>): Map<String, Set<String>> {
         val graph = mutableMapOf<String, Set<String>>()
@@ -14,124 +12,44 @@ class Day11(filePath: String) : DaySolver(filePath) {
         return graph
     }
 
-    private fun getPathsFromSourceToDest(graph: Map<String, Set<String>>, from: String, destination: String, canVisit: Map<String, Set<String>> = emptyMap()): Int {
-        val queue: Queue<Pair<String, MutableSet<String>>> = LinkedList()
-        var paths = 0
-        queue.add(Pair(from, mutableSetOf()))
-
-        while (queue.isNotEmpty()) {
-            val element = queue.poll()
-            val vertex = element.first
-            val visited = element.second
-
-            if (vertex in visited) {
-                continue
-            }
-
-            if (vertex == destination) {
-                paths++
-                continue
-            }
-
-            visited.add(vertex)
-
-            for (neighbour in graph[vertex]!!) {
-                if (neighbour !in visited) {
-                    var shouldVisit = true
-                    for (mustVisit in canVisit.keys) {
-                        if (neighbour in canVisit.keys) {
-                            break
-                        }
-
-                        if (neighbour !in canVisit[mustVisit]!! && mustVisit !in visited) {
-                            shouldVisit = false
-                        }
-                    }
-
-                    if (shouldVisit) {
-                        val visitedCopy = mutableSetOf<String>()
-                        visitedCopy.addAll(visited)
-                        queue.add(Pair(neighbour, visitedCopy))
-                    }
-                }
-            }
+    private fun getPathsFromSourceToDestRec(cache: MutableMap<String, Long>, graph: Map<String, Set<String>>, from: String, destination: String): Long {
+        if (from == destination) {
+            return 1L
         }
 
-        return paths
-    }
-
-    private fun canGetFromToDest(graph: Map<String, Set<String>>, from: String, destination: String): Boolean {
-        val stack: LinkedList<String> = LinkedList()
-        val visited: MutableSet<String> = mutableSetOf()
-        stack.add(from)
-
-        while (stack.isNotEmpty()) {
-            val vertex = stack.removeLast()
-
-            if (vertex in visited) {
-                continue
-            }
-
-            if (vertex == destination) {
-                return true
-            }
-
-            visited.add(vertex)
-
-            if (vertex !in graph) {
-                continue
-            }
-
-            for (neighbour in graph[vertex]!!) {
-                if (neighbour !in visited) {
-                    stack.add(neighbour)
-                }
-            }
+        if (cache.containsKey(from)) {
+            return cache[from]!!
         }
 
-        return false
-    }
+        var sum = 0L
+        for (neighbour in graph[from] ?: emptySet()) {
+            sum += getPathsFromSourceToDestRec(cache, graph, neighbour, destination)
+        }
 
+        cache[from] = sum
+        return sum
+    }
 
     override fun solvePartOne(input: List<String>): String {
         val graph = buildGraph(input)
-        return getPathsFromSourceToDest(graph, "you", "out").toString()
+        return getPathsFromSourceToDestRec(mutableMapOf(), graph, "you", "out").toString()
     }
 
     override fun solvePartTwo(input: List<String>): String {
         val graph = buildGraph(input)
-        val canVisitDac = mutableSetOf<String>()
-        val canVisitFft = mutableSetOf<String>()
-        val canVisitOut = mutableSetOf<String>()
-        for (vertex in graph.keys) {
-            if (canGetFromToDest(graph, vertex, "dac")) {
-                canVisitDac.add(vertex)
-            }
-            if (canGetFromToDest(graph, vertex, "fft")) {
-                canVisitFft.add(vertex)
-            }
-            if (canGetFromToDest(graph, vertex, "out")) {
-                canVisitOut.add(vertex)
-            }
+        val dacTofft = getPathsFromSourceToDestRec(mutableMapOf(), graph, "dac", "fft")
+
+        if (dacTofft == 0L) {
+            val svrTofft = getPathsFromSourceToDestRec(mutableMapOf(), graph, "svr", "fft")
+            val fftTodac = getPathsFromSourceToDestRec(mutableMapOf(), graph, "fft", "dac")
+            val dacToout = getPathsFromSourceToDestRec(mutableMapOf(), graph, "dac", "out")
+
+            return (svrTofft * fftTodac * dacToout).toString()
+        } else {
+            val svrTodac = getPathsFromSourceToDestRec(mutableMapOf(), graph, "svr", "dac")
+            val fftToout = getPathsFromSourceToDestRec(mutableMapOf(), graph, "fft", "out")
+            return (svrTodac * dacTofft * fftToout).toString()
         }
-
-
-//        val svrTofft = getPathsFromSourceToDest(graph, "svr", "fft", mutableMapOf("fft" to canVisitFft))
-        val filteredGraph = mutableMapOf<String, Set<String>>()
-        for (key in graph.keys) {
-            if (key !in canVisitDac) {
-                continue
-            }
-            val filteredNeighbors = graph[key]!!.filter { neighbor ->
-                canGetFromToDest(graph, neighbor, "dac")
-            }.toSet()
-            filteredGraph[key] = filteredNeighbors
-        }
-        val fftTodac = getPathsFromSourceToDest(filteredGraph, "fft", "dac")
-//        val dacTofft = getPathsFromSourceToDest(graph, "dac", "fft", mutableMapOf("fft" to canVisitFft))
-
-        println(canGetFromToDest(graph, "fft", "dac"))
-        return "ree"
     }
 }
 
