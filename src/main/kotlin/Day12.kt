@@ -34,7 +34,7 @@ class Day12(filePath: String) : DaySolver(filePath) {
     }
 
     override fun solvePartTwo(input: List<String>): String {
-        return "ALMOST THERE..."
+        return "GG, WP!"
     }
 }
 
